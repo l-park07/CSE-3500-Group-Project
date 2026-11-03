@@ -1,0 +1,62 @@
+id,program_code,hospital,specialty,quota_2025
+1079140,1079140C0,Bridgeport Hospital-CT,Internal Medicine,18
+1079220,1079220C0,Bridgeport Hospital-CT,Obstetrics-Gynecology,4
+2428400,2428400C0,Connecticut Institute for Communities Health,Psychiatry,4
+2186120,2186120C0,Eastern CT Health Network,Family Medicine,6
+2186400,2186400C0,Eastern CT Health Network,Psychiatry,4
+1082140,1082140C0,Greenwich Hospital-CT,Internal Medicine,6
+1977140,1977140C0,Griffin Hospital-CT,Internal Medicine,8
+1977751,1977751C0,Griffin Hospital-CT,Medicine-Preventive Med/General,3
+1083300,1083300C0,Hartford Hospital-CT,Pathology,2
+1083400,1083400C0,Hartford Hospital-CT,Psychiatry,6
+1087120,1087120C0,Middlesex Hospital-CT,Family Medicine,7
+2371120,2371120C1,Quinnipiac Univ/Netter MD SOM-CT,Fam Med/Rural Hungerford Hosp,4
+2371400,2371400C0,Quinnipiac Univ/Netter MD SOM-CT,Psychiatry/Rural,4
+1085220,1085220C0,St Francis Hospital-CT,Obstetrics-Gynecology,5
+1096140,1096140C0,St Marys Hospital-CT,Internal Medicine,10
+1096440,1096440C0,St Marys Hospital-CT,General Surgery,1
+1080140,1080140C0,St Vincents Med Ctr-CT,Internal Medicine,10
+1095120,1095120C0,Stamford Hospital/Columbia-CT,Family Medicine,5
+1095140,1095140C0,Stamford Hospital/Columbia-CT,Internal Medicine,8
+1095220,1095220C0,Stamford Hospital/Columbia-CT,Obstetrics-Gynecology,4
+1095440,1095440C0,Stamford Hospital/Columbia-CT,General Surgery,3
+1094040,1094040C0,U Connecticut School of Medicine,Anesthesiology,9
+1094110,1094110C0,U Connecticut School of Medicine,Emergency Medicine,18
+1094120,1094120C0,U Connecticut School of Medicine,Family Medicine,7
+1094140,1094140C0,U Connecticut School of Medicine,Internal Medicine,57
+1094140,1094140C1,U Connecticut School of Medicine,Internal Med/Geriatrics/4 yrs,1
+1094160,1094160C0,U Connecticut School of Medicine,Neurological Surgery,1
+1094180,1094180C0,U Connecticut School of Medicine,Neurology,7
+1094220,1094220C0,U Connecticut School of Medicine,Obstetrics-Gynecology,10
+1094260,1094260C0,U Connecticut School of Medicine,Orthopaedic Surgery,5
+1094280,1094280C0,U Connecticut School of Medicine,Otolaryngology,3
+1094320,1094320C0,U Connecticut School of Medicine,Pediatrics,22
+1094340,1094340C1,U Connecticut School of Medicine,Phys Medicine & Rehab,4
+1094400,1094400C0,U Connecticut School of Medicine,Psychiatry,7
+1094440,1094440C0,U Connecticut School of Medicine,General Surgery,8
+1094451,1094451C0,U Connecticut School of Medicine,Vascular Surgery,1
+1097440,1097440C0,Waterbury Hospital-CT,General Surgery,2
+1089040,1089040C0,Yale-New Haven Hosp-CT,Anesthesiology,21
+1089110,1089110C0,Yale-New Haven Hosp-CT,Emergency Medicine,17
+1089110,1089110C1,Yale-New Haven Hosp-CT,Emergency Medicine/Research,2
+1089140,1089140C0,Yale-New Haven Hosp-CT,Internal Medicine,38
+1089140,1089140C1,Yale-New Haven Hosp-CT,Int Med/Physician Scientist,8
+1089140,1089140C2,Yale-New Haven Hosp-CT,Internal Medicine/Yale-Waterbury,10
+1089160,1089160C0,Yale-New Haven Hosp-CT,Neurological Surgery,2
+1089185,1089185C0,Yale-New Haven Hosp-CT,Child Neurology,2
+1089220,1089220C0,Yale-New Haven Hosp-CT,Obstetrics-Gynecology,8
+1089260,1089260C0,Yale-New Haven Hosp-CT,Orthopaedic Surgery,5
+1089280,1089280C0,Yale-New Haven Hosp-CT,Otolaryngology,4
+1089300,1089300C0,Yale-New Haven Hosp-CT,Pathology/Comb-Anat & Clin,6
+1089300,1089300C2,Yale-New Haven Hosp-CT,Pathology/Clinical Only,2
+1089320,1089320C0,Yale-New Haven Hosp-CT,Pediatrics,21
+1089340,1089340C0,Yale-New Haven Hosp-CT,Phys Medicine & Rehab,4
+1089362,1089362C0,Yale-New Haven Hosp-CT,Plastic Surgery (Integrated),3
+1089400,1089400C0,Yale-New Haven Hosp-CT,Psychiatry,13
+1089400,1089400C2,Yale-New Haven Hosp-CT,Psychiatry/Combined Adult/Child,2
+1089400,1089400C3,Yale-New Haven Hosp-CT,Psychiatry/Research,3
+1089416,1089416C0,Yale-New Haven Hosp-CT,Interventional Radiology (Integ),3
+1089440,1089440C0,Yale-New Haven Hosp-CT,General Surgery,10
+1089451,1089451C0,Yale-New Haven Hosp-CT,Vascular Surgery,1
+1089461,1089461C0,Yale-New Haven Hosp-CT,Thoracic Surgery,2
+1089700,1089700C0,Yale-New Haven Hosp-CT,Medicine-Pediatrics,4
