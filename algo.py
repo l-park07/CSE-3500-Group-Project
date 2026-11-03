@@ -9,20 +9,79 @@ number_applicants = 0
 number_couples = 0
 
 
+def is_match_possible(a, p):
+    if a.couple > -1:
+        # couple logic
+        pass
+        # return T/F
+    else:
+        # check if a is in p's rol
+        pass
+        # return T/F
+        
+
+def is_match_confirmed():
+    pass
+
+    
+def make_tent_match(Tentative, app, p):
+    # queue -> tentative
+    removed = None
+    if p.get_open_pos() == 0: # positions full (must kick someone)
+        removed = p.match.pop() 
+    p.match.append(app)
+    Tentative.append(app)
+    return Tentative, removed # removed will be None if no one kicked (otherwise return removed applicant, who need to be reassessed)
+
+def make_confirmed_match(Confirmed, app, p):
+    # match to be made (only executes when confirmed)
+    # direct from queue -> confirmed
+    Confirmed.append(app)
+    p.match.append(app)
+    app.match = p
+    return Confirmed
+
+def make_unmatched(Unmatched, app):
+    app.match = None
+    Unmatched.append(app)
+    return Unmatched
+
+
+def rematch(p, a):
+    # will take removed applicant and try to re place them
+    # OPTIONS (for placement): tent->tent; tent->unmatched; tent->confirmed
+    pass
+
+
+
+def confirm_matches(Confirmed, app):
+    # assume that already taken from quota/on p match list (coming from tentative match)
+    Confirmed.append(app)
+    return Confirmed
+
+
+
+
 class Program:
     # program class
-    def __init__(self, q, id=0, rol=[]):
+    def __init__(self, q, code, rol=[]):
         global number_programs 
         number_programs += 1
 
-        self.id = id # represented by #### ### (length 7 integer) which will never have leading zeros
+        self.id = number_programs # integer, will start at 1 (reference this instead of code for applicant rol)
+        self.code = code # represented by #### ### (length 7 integer) which will never have leading zeros
         self.quota = q # integer, quota of program (number of spots to fill)
         self.rol = rol # ranked order list of program (ranking applicants)
         self.match = []
+        self.open = self.quota
 
     def code_decoder(self):
         # decodes and ouputs self.id as the hospital name, specialty and self.quota (maybe positions open?)
         pass
+
+    def get_open_pos(self):
+        self.open = self.quota - len(self.match) # gives how many positions are currently open
+        return self.open
 
 
 
@@ -33,11 +92,11 @@ class Applicant:
         number_applicants += 1
 
         self.id = number_applicants #integer
-        self.rol = rol # ranked order list of applicant (ranking programs)
+        self.rol = rol # ranked order list of applicant (ranking programs- stores Program.ids)
         self.couple = couple # integer: -1 indicates not a couple, otherwise it is same as couple.id
         self.match = None
     def matched(self, program):
-        self.match = program
+        self.match = program #program object (then can decode) -- MAYBE HAVE AS ADD'L VARIABLE? self.hospital, self.specialty
 
 
 
@@ -60,8 +119,6 @@ class Couple:
 # will need to load data and create/store applicant/program instances in array
 Programs = [Program(2), Program(2)]
 Applicants = [Applicant([1,2]), Applicant([2])] # should this be ids or object instances
-# orrr applicants = [1,2,3]
-# and applicant_dict = {1: Applicant([1,2]), 2: A....}
 
 class Queue:
     def __init__(self):
@@ -117,7 +174,8 @@ Tent = Tentative() # where the tentative matches will go (initially empty)
         # if not possible, return 0
         # if someone gets kicked out, return id of the person who got removed (while match(self,id) != 0)
     
-while(Queue != 0):
+while(Queue.size() != 0):
+    # ADD LOGIC HERE (will need to make helper functions prolly in classes?)
     # determine if match is possible for first element in queue
     # use peek to access most recent element
     # if match not possible, move on to next in ROL
