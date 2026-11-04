@@ -1,7 +1,7 @@
 # NRMP Matching Alogrithm
 
 from itertools import zip_longest # used to iterate and populate couples rol
-from collections import deque # used to quickly append/pop items in beg/end of queue
+from collections import deque # used to quickly append/pop item in beg/end of queue
 
 
 number_programs = 0
@@ -10,78 +10,108 @@ number_couples = 0
 
 
 def is_match_possible(a, p):
-    if a.couple > -1:
+    # returns the object of the one that gets kicked (or 0 if no one moved), returns T/F if match is possible
+    if a.couple > 0:
         # couple logic
         pass
-        # return T/F
     else:
-        # check if a is in p's rol
-        pass
-        # return T/F
-        
+        if (a.id in p.rol): # applicant id of a must be on rol of program p
+            if p.get_open_pos() > 0: # open positions
+                return 0, True # can add to match without kicking
+            
+            if len(p.match) > 0: # checking that p.match is not empty
+                least_fav = p.rol.index(a.id)
+                for app in p.match: # iterate through matched applicants
+                    i_cur = p.rol.index(app.id)
+                    if i_cur > least_fav: # a is preferred to existing match (comparing indices - less index means more preferred)
+                        least_fav = i_cur
+                
+                if least_fav != p.rol.index(a.id):
+                    remove = p.match.pop(least_fav) # removes less preferred candidate from match
+                    return remove, True
+                else:
+                    return 0, False # a is not more preferred to current apps matched
+    return 0, False # a cannot be matched
 
-def is_match_confirmed():
-    pass
+
+
+def is_match_confirmed(a, p):
+    # already known that a can be added, determining if it is tentative or confirmed match
+    a_rank = p.rol.index(a) + 1
+    if(a_rank < p.quota):
+        return True
+    return False
+
 
     
-def make_tent_match(Tentative, app, p):
+def make_tent_match(Tentative, a, p):
     # queue -> tentative
-    removed = None
-    if p.get_open_pos() == 0: # positions full (must kick someone)
-        removed = p.match.pop() 
-    p.match.append(app)
-    Tentative.append(app)
-    return Tentative, removed # removed will be None if no one kicked (otherwise return removed applicant, who need to be reassessed)
+    Tentative.append(a)
+    p.match.append(a)
+    a.match = p
+    return Tentative
 
-def make_confirmed_match(Confirmed, app, p):
+
+
+def make_confirmed_match(Confirmed, a, p):
     # match to be made (only executes when confirmed)
     # direct from queue -> confirmed
-    Confirmed.append(app)
-    p.match.append(app)
-    app.match = p
+    # CHECK p.get_open_pos() > 0 (already checked if get to this point)
+    Confirmed.append(a)
+    p.match.append(a)
+    a.match = p
     return Confirmed
 
-def make_unmatched(Unmatched, app):
-    app.match = None
-    Unmatched.append(app)
+
+
+def make_unmatched(Unmatched, a):
+    a.match = None
+    Unmatched.append(a)
     return Unmatched
 
 
-def rematch(p, a):
+def rematch(a, p):
     # will take removed applicant and try to re place them
-    # OPTIONS (for placement): tent->tent; tent->unmatched; tent->confirmed
-    pass
+    # OPTIONS (for placement): tent->tent; tent->unmatched (-1); tent->confirmed (1)
+    cur = a.rol.index(p.id) # pick up where you left off
+    for i in range(cur, len(a.rol)):
+        program = a.rol[i]
+        x, pos = is_match_possible(a, program)
+        if(pos):
+            if(is_match_confirmed(a,program)):
+                return x, 1, p
+            return x, 0, p
+    # -1 -> goes to unmatched, 1 -> confirmed, 0 -> stayed as a tentative match
+    return 0, -1, None
+# CHECK THIS - RECURSION MAY NOT EDIT PLACE/TENT
 
 
 
-def confirm_matches(Confirmed, app):
-    # assume that already taken from quota/on p match list (coming from tentative match)
-    Confirmed.append(app)
-    return Confirmed
 
 
 
 
+'''Data classes for Program, Applicant, Couple'''
 class Program:
     # program class
-    def __init__(self, q, code, rol=[]):
+    def __init__(self, q, code=-1, rol=[]):
         global number_programs 
         number_programs += 1
 
         self.id = number_programs # integer, will start at 1 (reference this instead of code for applicant rol)
         self.code = code # represented by #### ### (length 7 integer) which will never have leading zeros
         self.quota = q # integer, quota of program (number of spots to fill)
-        self.rol = rol # ranked order list of program (ranking applicants)
-        self.match = []
-        self.open = self.quota
+        self.rol = rol # ranked order list of program (ranking applicants) - stores applicant IDs
+        self.match = [] # matched applicants, stores applicant OBJECTS
+        self._open = self.quota
 
     def code_decoder(self):
         # decodes and ouputs self.id as the hospital name, specialty and self.quota (maybe positions open?)
         pass
 
     def get_open_pos(self):
-        self.open = self.quota - len(self.match) # gives how many positions are currently open
-        return self.open
+        self._open = self.quota - len(self.match) # gives how many positions are currently open
+        return self._open
 
 
 
@@ -115,11 +145,14 @@ class Couple:
         self.linked_rol = list(zip_longest(self.partnerA.rol, self.partnerB.rol, fillvalue=0))
 
 
-
+'''
 # will need to load data and create/store applicant/program instances in array
 Programs = [Program(2), Program(2)]
 Applicants = [Applicant([1,2]), Applicant([2])] # should this be ids or object instances
+'''
 
+
+'''Data Class structures'''
 class Queue:
     def __init__(self):
         self._items = deque()
@@ -136,30 +169,13 @@ class Queue:
 
     def size(self):
         return len(self._items)
-
-    def confirmed_match(self, confirm, ls, p):
-        # assumes that check has already been done and there is no way for 'confirm' applicant to not match with any other program (or get kicked out)
-        ls.append(confirm)
-        p.match.append(confirm)
-        p.quote -= 1
-        confirm.matched(p) # update match
         
 
 
-class Tentative:
-    def __init__(self):
-        self._items = deque()
-    # will add add'l behavior as needed
+Applicants = [] # WILL BE LIST OF APPLICANT OBJECTS
+Programs = [] # WILL BE LIST OF PROGRAM OBJECTS 
 
-    def make_confirmed(self, confirmed, ls, p): # confirmed:applicant object; ls:Confirmed array; p:program object
-        # move tent match to confirmed array (return confirmed array)
-        ls.append(confirmed) # adds confirmed applicant to ls (Confirmed)
-        p.match.append(confirmed)
-        p.quota -= 1
-        confirmed.matched(p) # pass program object to confirmed (applicant object) 
-        return ls
-
-
+Tent = [] # where the tentative matches will go (initially empty), can write, SHOULD BE EMPTY AT END
 Confirmed = [] # only add, do not remove from
 Unmatched = [] # only add, do not remove from (once added to unmatched, means that no possible match could be found for an applicant)
 
@@ -167,27 +183,40 @@ Queue = Queue() # initialized with all applicants
 for x in Applicants:
     Queue.enqueue(x) # add all applicants to Queue
 
-Tent = Tentative() # where the tentative matches will go (initially empty)
 
-# will determine whether match is possible
-        # if possible, added to match (kicking out someone if needed, updating quota as needed)
-        # if not possible, return 0
-        # if someone gets kicked out, return id of the person who got removed (while match(self,id) != 0)
+# if someone gets kicked out, return id of the person who got removed (while match(self,id) != 0)
     
 while(Queue.size() != 0):
-    # ADD LOGIC HERE (will need to make helper functions prolly in classes?)
+    a = Queue.peek() # get first Applicant in Queue
+    for p in a.rol: # ids of program
+        removed, possible = is_match_possible(a,p) # removed either stores app object or 0
+        if(possible):
+            if(is_match_confirmed(a,p)):
+                Confirmed = make_confirmed_match(Confirmed, a, p)
+            else:
+                Tent = make_tent_match(Tent, a, p)
+            Queue.dequeue()
+            while(removed != 0): # if not 0, then someone got kicked
+                r, outcome, new_p = rematch(removed, p) # removed is Applicant object
+                if outcome == -1:
+                    Unmatched = make_unmatched(Unmatched, removed)
+                elif outcome == 1:
+                    Confirmed = make_confirmed_match(Confirmed, a, new_p)
+                else:
+                    Tent = make_tent_match(Tent, removed, new_p)
+                removed = r
     # determine if match is possible for first element in queue
     # use peek to access most recent element
     # if match not possible, move on to next in ROL
     # if match is possible but kicks someone out, now should find new match for that person
     # if match is possible and tentative, add to tent (update all accd values)
-    pass
-
-# must be applicant instances pass I think
 
 # after queue is empty (make all tent matches final)
 for y in Tent:
-    Confirmed.append(y) # y already has its match and program already has 
+    Tent.remove(y)
+    Confirmed = Confirmed.append(y) # y already has its match, making it confirmed
+
+# tent and queue should now be empty
 
 
 '''
